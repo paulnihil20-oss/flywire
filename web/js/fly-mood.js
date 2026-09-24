@@ -1,0 +1,1 @@
+export function flyMood({combo=0,missStreak=0,health=100,wake=0,failed=false,finished=false,msSinceLastMiss=Infinity}){if(failed||health<=0)return'faint';if(missStreak>=3&&msSinceLastMiss<1500)return'shaken';if(combo>=50)return'ecstatic';if(combo>=25)return'dance';if(combo>=10)return'groove';if(wake>=.05||finished)return'waking';return'asleep';}

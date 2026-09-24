@@ -1,0 +1,7 @@
+export const xpToReach=level=>Math.round(250*(level-1)**1.5);
+export function levelForXp(xp){let level=1;while(level<50&&xpToReach(level+1)<=xp)level++;return level;}
+export const LEVEL_TITLES=[[1,4,'Lab Intern'],[5,9,'Spike Tech'],[10,14,'Synapse Jockey'],[15,19,'Circuit Conductor'],[20,29,'Neuro-DJ'],[30,39,'Connectome Maestro'],[40,50,'Fly Whisperer']];
+export function levelTitle(level){return LEVEL_TITLES.find(([min,max])=>level>=min&&level<=max)?.[2]||'Lab Intern';}
+export function discover(profile,laneInfo,knownTypes){const next={...profile,atlas:{...(profile.atlas||{}),discovered:[...new Set(profile.atlas?.discovered||[])]}},known=new Set(knownTypes||[]),found=[];for(const lane of laneInfo||[])for(const type of lane.topCellTypes||[])if(type&&known.has(type)&&!next.atlas.discovered.includes(type)){next.atlas.discovered.push(type);found.push(type);}return{profile:next,found};}
+export function updateStreak(profile,dateKey){const next={...profile,streak:{...(profile.streak||{})}},last=next.streak.lastDate,count=next.streak.count||0;if(last===dateKey)return next;const now=new Date(`${dateKey}T00:00:00Z`),prev=last?new Date(`${last}T00:00:00Z`):null,days=prev?Math.round((now-prev)/86400000):0;next.streak={lastDate:dateKey,count:days===1?count+1:1};return next;}
+export function awardXp({accuracy,firstClear,newStarsGained,newBestGrade,newDiscoveries}){return Math.round((100+400*accuracy)*(firstClear?1:.3))+150*newStarsGained+(newBestGrade?100:0)+20*newDiscoveries;}

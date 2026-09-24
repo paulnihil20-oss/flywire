@@ -1,0 +1,11 @@
+{
+  "name": "neuron-beat",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:data": "node tools/make_demo_data.mjs",
+    "serve": "node tools/serve.mjs",
+    "test": "node --test tests/"
+  }
+}
