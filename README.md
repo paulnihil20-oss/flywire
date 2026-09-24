@@ -43,3 +43,5 @@ The app includes the full six-track campaign, four difficulties, keyboard/touch 
 ## Publishing
 
 Push to `master` and enable GitHub Pages with GitHub Actions as its source. The included workflow publishes `web/`; the app uses relative paths and works from the repository's Pages subpath. For another static host, set `web/` as the publish directory.
+
+For Vercel, import the repository with its root directory set to the repository root. `vercel.json` selects the static “Other” preset, skips install/build steps, and publishes `web/`; the Python file under `pipeline/` is only a local data-generation tool.
