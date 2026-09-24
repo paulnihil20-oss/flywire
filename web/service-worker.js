@@ -1,4 +1,4 @@
-const CACHE = 'neuron-beat-shell-v3';
+const CACHE = 'neuron-beat-shell-v4';
 const SHELL = [
   './', './index.html', './manifest.webmanifest', './icon.svg', './css/style.css',
   './data/circuit.json', './data/songs_config.json',

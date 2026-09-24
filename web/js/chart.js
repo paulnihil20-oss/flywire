@@ -1,6 +1,6 @@
-import {hashSeed} from './sim.js';
+import {hashSeed,mulberry32} from './sim.js';
 export const DIFFICULTIES=Object.freeze({easy:{lanes:4,targetNps:2.4,maxSimultaneous:1,minGap:2,approachMs:1350,drain:5,label:'EASY'},normal:{lanes:6,targetNps:4.3,maxSimultaneous:2,minGap:1,approachMs:1000,drain:7,label:'NORMAL'},hard:{lanes:6,targetNps:6.8,maxSimultaneous:2,minGap:1,approachMs:800,drain:9,label:'HARD'},expert:{lanes:6,targetNps:9.3,maxSimultaneous:3,minGap:1,approachMs:660,drain:12,label:'EXPERT'}});
-export function generateChart({circuit,sim,songId,difficulty,bpm,durationMs}){
+export function generateChart({circuit,sim,songId,difficulty,bpm,durationMs,patternSeed}){
   const rules=DIFFICULTIES[difficulty];if(!rules)throw new Error(`Unknown difficulty: ${difficulty}`);
   let pool=[];for(let i=0;i<circuit.n;i++)if(sim.counts[i]>=3&&!sim.stimulated[i])pool.push(i);
   if(pool.length<40){pool=[];for(let i=0;i<circuit.n;i++)if(sim.counts[i]>0)pool.push(i);}
@@ -26,8 +26,8 @@ export function generateChart({circuit,sim,songId,difficulty,bpm,durationMs}){
   // follows the same tempo grid and uses the connectome-derived lane/sign data.
   if(notes.length<Math.max(8,target*.8)){
     notes.length=0;last.fill(-999);perCell.fill(0);
-    const stride=cells/target,seed=hashSeed(songId,difficulty);
-    for(let i=0;i<target;i++){const cell=Math.min(cells-1,Math.floor((i+.5)*stride)),lane=(i+seed)%rules.lanes,activity=counts[lane][cell],sign=inh[lane][cell]>activity/2?-1:1;notes.push({t:0,lane,sign,strength:activity?Math.max(.25,activity/laneMax[lane]):.25,cell});perCell[cell]++;}
+    const stride=cells/target,legacyPattern=patternSeed===null,rng=mulberry32((patternSeed??hashSeed(songId,difficulty))>>>0);let deck=[],previous=-1;
+    for(let i=0;i<target;i++){if(!legacyPattern&&!deck.length){deck=Array.from({length:rules.lanes},(_,lane)=>lane);for(let j=deck.length-1;j>0;j--){const k=Math.floor(rng()*(j+1));[deck[j],deck[k]]=[deck[k],deck[j]];}if(deck.length>1&&deck[deck.length-1]===previous)[deck[0],deck[deck.length-1]]=[deck[deck.length-1],deck[0]];}const cell=Math.min(cells-1,Math.floor((i+.5)*stride)),lane=legacyPattern?(i+hashSeed(songId,difficulty))%rules.lanes:deck.pop();previous=lane;const activity=counts[lane][cell],sign=inh[lane][cell]>activity/2?-1:1;notes.push({t:0,lane,sign,strength:activity?Math.max(.25,activity/laneMax[lane]):.25,cell});perCell[cell]++;}
   }
   const beat=60000/bpm,leadInMs=4*beat+1000;for(const note of notes)note.t=Math.round(leadInMs+note.cell*stepMs);notes.sort((a,b)=>a.t-b.t||a.lane-b.lane);
   let chords=0;for(const count of perCell)if(count>1)chords++;let maxGapMs=0;for(let i=1;i<notes.length;i++)maxGapMs=Math.max(maxGapMs,notes[i].t-notes[i-1].t);

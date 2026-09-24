@@ -1,22 +1,22 @@
 import {hashSeed} from './sim.js';
 
-const PREFIX='NB1',MISS=32767,DIFFICULTIES=new Set(['easy','normal','hard','expert']);
+const PREFIX='NB2',MISS=32767,DIFFICULTIES=new Set(['easy','normal','hard','expert']);
 function toBase64Url(text){const bytes=new TextEncoder().encode(text);let binary='';for(const byte of bytes)binary+=String.fromCharCode(byte);return btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
 function fromBase64Url(text){const binary=atob(text.replace(/-/g,'+').replace(/_/g,'/'));return new TextDecoder().decode(Uint8Array.from(binary,c=>c.charCodeAt(0)));}
 
-export function encodeReplay({songId,difficulty,outcomes}){
-  if(!songId||!DIFFICULTIES.has(difficulty)||!Array.isArray(outcomes)||outcomes.length<1||outcomes.length>750)throw new Error('This run cannot be shared.');
-  const payload={v:1,songId,difficulty,outcomes:outcomes.map(value=>value===null?MISS:Math.max(-150,Math.min(150,Math.round(value))))};
+export function encodeReplay({songId,difficulty,seed,outcomes}){
+  if(!songId||!DIFFICULTIES.has(difficulty)||!Number.isInteger(seed)||seed<0||seed>0xffffffff||!Array.isArray(outcomes)||outcomes.length<1||outcomes.length>750)throw new Error('This run cannot be shared.');
+  const payload={v:2,songId,difficulty,seed,outcomes:outcomes.map(value=>value===null?MISS:Math.max(-150,Math.min(150,Math.round(value))))};
   const body=toBase64Url(JSON.stringify(payload));
   return `${PREFIX}.${body}.${hashSeed(body,PREFIX).toString(36)}`;
 }
 
 export function decodeReplay(code){
-  const match=String(code||'').trim().match(/^NB1\.([A-Za-z0-9_-]+)\.([a-z0-9]+)$/);
-  if(!match||match[1].length>12000||hashSeed(match[1],PREFIX).toString(36)!==match[2])throw new Error('That race code is invalid or incomplete.');
-  let payload;try{payload=JSON.parse(fromBase64Url(match[1]));}catch{throw new Error('That race code could not be read.');}
-  if(payload?.v!==1||typeof payload.songId!=='string'||payload.songId.length>80||!DIFFICULTIES.has(payload.difficulty)||!Array.isArray(payload.outcomes)||payload.outcomes.length<1||payload.outcomes.length>750||payload.outcomes.some(n=>n!==MISS&&(!Number.isInteger(n)||n < -150||n > 150)))throw new Error('That race code is not a supported replay.');
-  return{...payload,outcomes:payload.outcomes.map(n=>n===MISS?null:n)};
+  const raw=String(code||'').trim(),match=raw.match(/^(NB1|NB2)\.([A-Za-z0-9_-]+)\.([a-z0-9]+)$/);
+  if(!match||match[2].length>12000||hashSeed(match[2],match[1]).toString(36)!==match[3])throw new Error('That race code is invalid or incomplete.');
+  let payload;try{payload=JSON.parse(fromBase64Url(match[2]));}catch{throw new Error('That race code could not be read.');}
+  if(payload?.v!==(match[1]==='NB1'?1:2)||typeof payload.songId!=='string'||payload.songId.length>80||!DIFFICULTIES.has(payload.difficulty)||(payload.v===2&&(!Number.isInteger(payload.seed)||payload.seed<0||payload.seed>0xffffffff))||!Array.isArray(payload.outcomes)||payload.outcomes.length<1||payload.outcomes.length>750||payload.outcomes.some(n=>n!==MISS&&(!Number.isInteger(n)||n < -150||n > 150)))throw new Error('That race code is not a supported replay.');
+  return{...payload,seed:payload.v===1?null:payload.seed,outcomes:payload.outcomes.map(n=>n===MISS?null:n)};
 }
 
 export function captureOutcomes(engine){return engine.notes.map(note=>note.judged&&note.kind!=='miss'?Math.max(-150,Math.min(150,Math.round(note.error))):null);}
