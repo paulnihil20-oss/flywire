@@ -1,6 +1,6 @@
 # Neuron Beat
 
-**A rhythm game made from a brain's wiring.** A sensory pulse enters a spiking-neuron simulation; the resulting activity becomes the notes on a glowing six-lane highway. Play with `S D F J` on Easy and all six keys, `S D F J K L`, on Normal and above, build a streak, and bring the fly companion around.
+**A rhythm game made from a brain's wiring.** A sensory pulse enters a spiking-neuron simulation; the resulting activity becomes the notes on a glowing six-lane highway. Play with `D F J K` on Easy and all six keys, `S D F J K L`, on Normal and above, build a streak, and bring the fly companion around.
 
 ## Run locally
 
@@ -16,7 +16,7 @@ Open [http://localhost:8080](http://localhost:8080). The app needs a local HTTP 
 
 ## Play
 
-New players can follow the six-step field guide before their first run. Choose any campaign signal and any difficulty; the full campaign is open from the start, while stars remain optional goals. Easy maps four lanes to `S D F J`; Normal, Hard, and Expert map six lanes left to right to `S D F J K L`. Touch pads appear on small screens. `R` retries, `Esc` pauses. Hits are judged Perfect / Great / Good / Miss. Streaks add points, restore stability, and gradually add synthesized music layers. A side objective earns a bonus star. Practice mode widens timing windows and removes game over; practice clears do not award stars. Settings include volume, input offset, reduced motion, and optional mobile haptics.
+New players can follow the six-step field guide before their first run. Choose any campaign signal and any difficulty; the full campaign is open from the start, while stars remain optional goals. Easy maps four lanes to `D F J K`; Normal, Hard, and Expert map six lanes left to right to `S D F J K L`. Touch pads appear on small screens. `R` retries, `Esc` pauses. Hits are judged Perfect / Great / Good / Miss. Streaks add points, restore stability, and gradually add synthesized music layers. A side objective earns a bonus star. Practice mode widens timing windows and removes game over; practice clears do not award stars. Settings include volume, input offset, reduced motion, and optional mobile haptics.
 
 There are six campaign tracks, a date-seeded Daily Brain, a custom Brain Studio, a discovered-neuron Atlas, a career page with seven unlockable medals, local XP and streaks, four selectable difficulty levels, and cached instant retries. Easy uses four lanes at 2.4 notes per second. Normal uses six lanes at 4.3 notes per second; Hard and Expert build to 6.8 and 9.3 notes per second. Campaign songs last 45 to 52.5 seconds. All sound is synthesized locally with Web Audio. Progress stays in this browser. The app shell and game data are cached for offline play after the first successful load, and supported browsers can install it as a standalone app.
 
