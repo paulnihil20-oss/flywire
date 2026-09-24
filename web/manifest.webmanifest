@@ -1,0 +1,14 @@
+{
+  "id": "./",
+  "name": "Neuron Beat — Wake the Fly",
+  "short_name": "Neuron Beat",
+  "description": "An offline rhythm game inspired by neural signals.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#080a12",
+  "theme_color": "#080a12",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

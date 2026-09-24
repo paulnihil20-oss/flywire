@@ -7,7 +7,6 @@
 Requires Node.js 18 or newer. No install, build step, web font, CDN, or network connection is needed.
 
 ```sh
-cd neuron-beat
 npm run serve
 ```
 
@@ -19,7 +18,7 @@ Open [http://localhost:8080](http://localhost:8080). The app needs a local HTTP 
 
 New players can follow the six-step field guide before their first run. Choose any campaign signal and any difficulty; the full campaign is open from the start, while stars remain optional goals. Easy maps four lanes to `S D F J`; Normal, Hard, and Expert map six lanes left to right to `S D F J K L`. Touch pads appear on small screens. `R` retries, `Esc` pauses. Hits are judged Perfect / Great / Good / Miss. Streaks add points, restore stability, and gradually add synthesized music layers. A side objective earns a bonus star. Practice mode widens timing windows and removes game over; practice clears do not award stars. Settings include volume, input offset, reduced motion, and optional mobile haptics.
 
-There are six campaign tracks, a date-seeded Daily Brain, a custom Brain Studio, a discovered-neuron Atlas, local progress, four selectable difficulty levels, and cached instant retries. Easy uses four lanes at 2.4 notes per second. Normal uses six lanes at 4.3 notes per second; Hard and Expert build to 6.8 and 9.3 notes per second. Campaign songs last 45 to 52.5 seconds. All sound is synthesized locally with Web Audio. Progress stays in this browser.
+There are six campaign tracks, a date-seeded Daily Brain, a custom Brain Studio, a discovered-neuron Atlas, a career page with seven unlockable medals, local XP and streaks, four selectable difficulty levels, and cached instant retries. Easy uses four lanes at 2.4 notes per second. Normal uses six lanes at 4.3 notes per second; Hard and Expert build to 6.8 and 9.3 notes per second. Campaign songs last 45 to 52.5 seconds. All sound is synthesized locally with Web Audio. Progress stays in this browser. The app shell and game data are cached for offline play after the first successful load, and supported browsers can install it as a standalone app.
 
 ## Design
 
@@ -35,8 +34,12 @@ The bundled circuit is **synthetic demo data**, generated deterministically by `
 
 ## Attribution
 
-The project is inspired by the FlyWire connectome and published spiking-neuron models. No FlyWire dataset is bundled. The generated circuit is synthetic and is not derived from a FlyWire export.
+The project is inspired by the FlyWire connectome and published spiking-neuron models. No FlyWire dataset is bundled. The generated circuit is synthetic and is not derived from a FlyWire export. The game is complete as an offline-first playable experience; the neural network shown is still a clearly labeled teaching model, not a real connectome. Authentic FlyWire integration needs a validated dataset and its applicable attribution and license details.
 
 ## Development status
 
-The playable web app includes the simulation-to-chart path, six presets, four difficulties, keyboard/touch play, synthesized backing and judgement audio, score/stability/combo, a six-step interactive field guide with in-run coaching, optional Practice mode, campaign progression, Daily Brain, Brain Studio, Atlas discoveries, preferences, and reduced-motion support. Simulations run in a cancellable Worker with a timed main-thread fallback, and active play pauses when the tab is hidden. The full real-data ETL pipeline, true connectome factual Atlas, live Echo mode, Poke-the-Brain lab, head-to-head duel, advanced rival/achievement systems, and share cards remain future work. UI labels and docs must not imply those incomplete features exist.
+The app includes the full six-track campaign, four difficulties, keyboard/touch play, synthesized backing and judgement audio, score/stability/combo, an interactive field guide with in-run coaching, optional Practice mode, Daily Brain, Brain Studio, Atlas discoveries, seven achievement medals, local progression, preferences, reduced-motion support, and offline installation. Simulations run in a cancellable Worker with a timed main-thread fallback, and active play pauses when the tab is hidden. The real-data ETL pipeline and factual FlyWire Atlas are not included; the game labels its synthetic teaching network in the UI.
+
+## Publishing
+
+Push to `master` and enable GitHub Pages with GitHub Actions as its source. The included workflow publishes `web/`; the app uses relative paths and works from the repository's Pages subpath. For another static host, set `web/` as the publish directory.
