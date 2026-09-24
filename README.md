@@ -18,7 +18,7 @@ Open [http://localhost:8080](http://localhost:8080). The app needs a local HTTP 
 
 New players can follow the six-step field guide before their first run. Choose any campaign signal and any difficulty; the full campaign is open from the start, while stars remain optional goals. Easy maps four lanes to `D F J K`; Normal, Hard, and Expert map six lanes left to right to `S D F J K L`. Touch pads appear on small screens. `R` retries, `Esc` pauses. Hits are judged Perfect / Great / Good / Miss. Streaks add points, restore stability, and gradually add synthesized music layers. A side objective earns a bonus star. Practice mode widens timing windows and removes game over; practice clears do not award stars. Settings include volume, input offset, reduced motion, and optional mobile haptics.
 
-There are six campaign tracks, a date-seeded Daily Brain, a custom Brain Studio, a discovered-neuron Atlas, a career page with seven unlockable medals, local XP and streaks, four selectable difficulty levels, and cached instant retries. Easy uses four lanes at 2.4 notes per second. Normal uses six lanes at 4.3 notes per second; Hard and Expert build to 6.8 and 9.3 notes per second. Campaign songs last 45 to 52.5 seconds. All sound is synthesized locally with Web Audio. Progress stays in this browser. The app shell and game data are cached for offline play after the first successful load, and supported browsers can install it as a standalone app.
+There are six campaign tracks, four difficulties, a date-seeded Daily Tournament, a custom Brain Studio, a discovered-neuron Atlas, a career page with seven unlockable medals, local XP and streaks, Ghost Races against personal bests or friends, daily local standings, and cached instant retries. Race codes carry a compact replay so a friend can race the same chart and compare score, sync, and combo without accounts. Everyone gets the same date-seeded daily signal; share the resulting code to compare results. Daily standings are stored on the current device and are not a global leaderboard. Easy uses four lanes at 2.4 notes per second. Normal uses six lanes at 4.3 notes per second; Hard and Expert build to 6.8 and 9.3 notes per second. Campaign songs last 45 to 52.5 seconds. All sound is synthesized locally with Web Audio. Progress stays in this browser. The app shell and game data are cached for offline play after the first successful load, and supported browsers can install it as a standalone app.
 
 ## Design
 
@@ -26,7 +26,8 @@ There are six campaign tracks, a date-seeded Daily Brain, a custom Brain Studio,
 - **Song:** notes are generated from the current simulation; the backing layers respond to a growing combo, while misses create a soft dropout.
 - **Retry:** `R` restarts from the in-memory chart and simulation result; the results card shows accuracy, grade, stars, combo, and a next action.
 - **Session:** all six campaign chapters are playable immediately; stars, XP/levels, and the Brain Atlas give returning players optional mastery goals.
-- **Daily:** the same UTC date selects the same seed and stimulus for everyone; shareable daily competition can be added without a server.
+- **Rival:** saved best replays become personal ghosts. Share a race code to import a friend's replay and race its exact note timing.
+- **Daily:** the same UTC date selects the same signal for everyone; score tables rank local attempts, while race codes let friends compare asynchronously.
 
 ## Data and scientific limits
 
@@ -38,7 +39,7 @@ The project is inspired by the FlyWire connectome and published spiking-neuron m
 
 ## Development status
 
-The app includes the full six-track campaign, four difficulties, keyboard/touch play, synthesized backing and judgement audio, score/stability/combo, an interactive field guide with in-run coaching, optional Practice mode, Daily Brain, Brain Studio, Atlas discoveries, seven achievement medals, local progression, preferences, reduced-motion support, and offline installation. Simulations run in a cancellable Worker with a timed main-thread fallback, and active play pauses when the tab is hidden. The real-data ETL pipeline and factual FlyWire Atlas are not included; the game labels its synthetic teaching network in the UI.
+The app includes the full six-track campaign, four difficulties, keyboard/touch play, synthesized backing and judgement audio, score/stability/combo, an interactive field guide with in-run coaching, optional Practice mode, Daily Tournament standings, Ghost Races, Brain Studio, Atlas discoveries, seven achievement medals, local progression, preferences, reduced-motion support, and offline installation. Simulations run in a cancellable Worker with a timed main-thread fallback, and active play pauses when the tab is hidden. Race codes are for casual comparison and are not server-verified; a public global leaderboard and live multiplayer would need an online service. The real-data ETL pipeline and factual FlyWire Atlas are not included; the game labels its synthetic teaching network in the UI.
 
 ## Publishing
 
