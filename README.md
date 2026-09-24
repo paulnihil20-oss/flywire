@@ -24,10 +24,10 @@ There are six campaign tracks, four difficulties, a date-seeded Daily Tournament
 
 The app has an optional Supabase email/password account and public global top-ten board for every campaign signal and difficulty, plus each day's tournament. Each player appears once per board; their best score is retained, with accuracy and combo used to break ties. Display names and scores are public; email addresses are not. Local play and saves continue to work when online accounts are not configured or available.
 
-To connect the online service:
+The current deployed app is connected to its Supabase project. To connect a different Supabase project:
 
 1. Create a Supabase project and run [`supabase/schema.sql`](supabase/schema.sql) in its SQL Editor.
-2. Copy the project's **Project URL** and **publishable key** (or legacy `anon` key) into `web/js/backend-config.js`.
+2. Replace the **Project URL** and **publishable key** in `web/js/backend-config.js`.
 3. In Supabase Authentication URL settings, add your deployed website URL to the allowed redirect URLs. Decide whether new accounts must confirm their email.
 4. Redeploy the static app. The key in `backend-config.js` is public by design; **never** put a `service_role` or secret key there. The included database policies expose only display names and scores, and restrict score submission to signed-in accounts. Public scores are casual and are not independently verified against gameplay.
 
