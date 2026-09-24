@@ -7,7 +7,8 @@ function readSession(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||
 function saveSession(next){session=next;if(next)localStorage.setItem(SESSION_KEY,JSON.stringify(next));else localStorage.removeItem(SESSION_KEY);}
 async function request(path,{method='GET',body,token,prefer}={}){
   if(!configReady())throw new Error('Online accounts are not configured yet.');
-  const response=await fetch(`${SUPABASE_URL}${path}`,{method,headers:{apikey:SUPABASE_ANON_KEY,Authorization:`Bearer ${token||session?.access_token||SUPABASE_ANON_KEY}`,'Content-Type':'application/json',...(prefer?{Prefer:prefer}:{})},...(body===undefined?{}:{body:JSON.stringify(body)})});
+  const bearer=token&&token!==SUPABASE_ANON_KEY?token:session?.access_token||(SUPABASE_ANON_KEY.startsWith('eyJ')?SUPABASE_ANON_KEY:null),headers={apikey:SUPABASE_ANON_KEY,'Content-Type':'application/json',...(bearer?{Authorization:`Bearer ${bearer}`}:{ }),...(prefer?{Prefer:prefer}:{})};
+  const response=await fetch(`${SUPABASE_URL}${path}`,{method,headers,...(body===undefined?{}:{body:JSON.stringify(body)})});
   const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.msg||data.message||data.error_description||data.error||`Online service error (${response.status}).`);return data;
 }
 async function ensureSession(){if(!session)session=readSession();if(!session)return null;if((session.expires_at||0)<Date.now()/1000+45){if(!session.refresh_token){saveSession(null);return null;}try{saveSession(await request('/auth/v1/token?grant_type=refresh_token',{method:'POST',body:{refresh_token:session.refresh_token},token:SUPABASE_ANON_KEY}));}catch{saveSession(null);return null;}}return session;}
