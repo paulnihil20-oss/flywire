@@ -1,9 +1,9 @@
-const CACHE = 'neuron-beat-shell-v4';
+const CACHE = 'neuron-beat-shell-v5';
 const SHELL = [
   './', './index.html', './manifest.webmanifest', './icon.svg', './css/style.css',
   './data/circuit.json', './data/songs_config.json',
   './js/main.js', './js/sim.js', './js/simulation.js', './js/sim.worker.js',
-  './js/chart.js', './js/engine.js', './js/rival.js', './js/audio.js', './js/layers.js',
+  './js/chart.js', './js/engine.js', './js/rival.js', './js/auth-client.js', './js/backend-config.js', './js/audio.js', './js/layers.js',
   './js/fly-mood.js', './js/progress.js', './js/storage.js'
 ];
 

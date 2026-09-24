@@ -20,6 +20,19 @@ New players can follow the six-step field guide before their first run. Choose a
 
 There are six campaign tracks, four difficulties, a date-seeded Daily Tournament, a custom Brain Studio, a discovered-neuron Atlas, a career page with seven unlockable medals, local XP and streaks, Ghost Races, daily local standings, and cached instant retries. Campaign attempts use a fresh simulation seed to vary the falling lane pattern; retry keeps that exact seed. Race codes carry the run seed and replay so a friend can rebuild the same chart and compare score, sync, and combo without accounts. Everyone gets the same date-seeded daily signal; share the resulting code to compare results. Daily standings are stored on the current device and are not a global leaderboard. Easy uses four lanes at 2.4 notes per second. Normal uses six lanes at 4.3 notes per second; Hard and Expert build to 6.8 and 9.3 notes per second. Campaign songs last 45 to 52.5 seconds. All sound is synthesized locally with Web Audio. Progress stays in this browser. The app shell and game data are cached for offline play after the first successful load, and supported browsers can install it as a standalone app.
 
+## Global accounts and leaderboards
+
+The app has an optional Supabase email/password account and public global top-ten board for every campaign signal and difficulty, plus each day's tournament. Each player appears once per board; their best score is retained, with accuracy and combo used to break ties. Display names and scores are public; email addresses are not. Local play and saves continue to work when online accounts are not configured or available.
+
+To connect the online service:
+
+1. Create a Supabase project and run [`supabase/schema.sql`](supabase/schema.sql) in its SQL Editor.
+2. Copy the project's **Project URL** and **publishable key** (or legacy `anon` key) into `web/js/backend-config.js`.
+3. In Supabase Authentication URL settings, add your deployed website URL to the allowed redirect URLs. Decide whether new accounts must confirm their email.
+4. Redeploy the static app. The key in `backend-config.js` is public by design; **never** put a `service_role` or secret key there. The included database policies expose only display names and scores, and restrict score submission to signed-in accounts. Public scores are casual and are not independently verified against gameplay.
+
+Supabase's password sign-in endpoints are used for account creation and login. Database access is protected with row-level security; see [Supabase password authentication](https://supabase.com/docs/guides/auth/passwords) and [Supabase row-level security](https://supabase.com/docs/guides/database/postgres/row-level-security).
+
 ## Design
 
 - **Moment:** each hit gets immediate timing feedback, a lane flare, a synthesized note, and a stability change.
@@ -27,7 +40,7 @@ There are six campaign tracks, four difficulties, a date-seeded Daily Tournament
 - **Retry:** `R` restarts from the in-memory chart and simulation result; the results card shows accuracy, grade, stars, combo, and a next action.
 - **Session:** all six campaign chapters are playable immediately; stars, XP/levels, and the Brain Atlas give returning players optional mastery goals.
 - **Rival:** compatible saved runs can replay as personal ghosts. Share a race code to import a friend's exact generated chart and replay.
-- **Daily:** the same UTC date selects the same signal for everyone; score tables rank local attempts, while race codes let friends compare asynchronously.
+- **Daily and global board:** the same UTC date selects the same signal for everyone; the global board can rank daily runs when Supabase is configured, while race codes still let friends compare asynchronously.
 
 ## Data and scientific limits
 
@@ -39,7 +52,7 @@ The project is inspired by the FlyWire connectome and published spiking-neuron m
 
 ## Development status
 
-The app includes the full six-track campaign, four difficulties, keyboard/touch play, synthesized backing and judgement audio, score/stability/combo, an interactive field guide with in-run coaching, optional Practice mode, Daily Tournament standings, Ghost Races, Brain Studio, Atlas discoveries, seven achievement medals, local progression, preferences, reduced-motion support, and offline installation. Simulations run in a cancellable Worker with a timed main-thread fallback, and active play pauses when the tab is hidden. Race codes are for casual comparison and are not server-verified; a public global leaderboard and live multiplayer would need an online service. The real-data ETL pipeline and factual FlyWire Atlas are not included; the game labels its synthetic teaching network in the UI.
+The app includes the full six-track campaign, four difficulties, keyboard/touch play, synthesized backing and judgement audio, score/stability/combo, an interactive field guide with in-run coaching, optional Practice mode, Daily Tournament standings, Ghost Races, optional Supabase accounts and per-signal global leaderboards, Brain Studio, Atlas discoveries, seven achievement medals, local progression, preferences, reduced-motion support, and offline installation. Simulations run in a cancellable Worker with a timed main-thread fallback, and active play pauses when the tab is hidden. Race codes and public scores are for casual comparison and are not server-verified. The real-data ETL pipeline and factual FlyWire Atlas are not included; the game labels its synthetic teaching network in the UI.
 
 ## Publishing
 
